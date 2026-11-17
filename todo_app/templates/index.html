@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Worklist | Team Tasks</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d2927;
+      --muted: #687571;
+      --line: #dce4df;
+      --paper: #ffffff;
+      --canvas: #f3f6f3;
+      --brand: #176b58;
+      --brand-dark: #105544;
+      --danger: #a44036;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--canvas);
+      color: var(--ink);
+      font: 16px/1.5 "Aptos", "Segoe UI", sans-serif;
+    }
+
+    header {
+      height: 68px;
+      padding: 0 7vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wordmark {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .wordmark span { color: var(--brand); }
+
+    .workspace-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    main {
+      width: min(760px, calc(100% - 40px));
+      margin: 64px auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.2;
+    }
+
+    .intro {
+      margin: 9px 0 30px;
+      color: var(--muted);
+    }
+
+    .add-form {
+      display: grid;
+      grid-template-columns: minmax(180px, 2fr) repeat(3, minmax(115px, 1fr)) auto;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .field {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      min-width: 0;
+      height: 42px;
+      padding: 0 10px;
+      border: 1px solid #cbd6d0;
+      border-radius: 5px;
+      background: var(--paper);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid #9ac9bb;
+      outline-offset: 1px;
+      border-color: var(--brand);
+    }
+
+    button {
+      min-height: 42px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 5px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .add-button {
+      min-width: 112px;
+      background: var(--brand);
+      color: white;
+    }
+
+    .add-button:hover { background: var(--brand-dark); }
+
+    .list-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-bottom: 11px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-top: 1px solid var(--line);
+    }
+
+    table {
+      width: 100%;
+      min-width: 620px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    td:first-child { overflow-wrap: anywhere; }
+
+    .delete-button {
+      min-height: 34px;
+      padding: 0 10px;
+      background: transparent;
+      color: var(--danger);
+      font-size: 13px;
+    }
+
+    .delete-button:hover { background: #f8eae8; }
+
+    .empty-state {
+      margin: 0;
+      padding: 24px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .add-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .add-button { justify-self: start; }
+    }
+
+    @media (max-width: 520px) {
+      header { height: 60px; padding: 0 20px; }
+      main { margin: 42px auto; }
+      h1 { font-size: 28px; }
+      .add-form { grid-template-columns: 1fr; }
+      .add-button { min-width: 92px; padding: 0 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wordmark">WORK<span>LIST</span></div>
+    <div class="workspace-label">Team workspace</div>
+  </header>
+
+  <main>
+    <p class="eyebrow">Daily operations</p>
+    <h1>Team task list</h1>
+    <p class="intro">Keep the next actions visible and moving.</p>
+
+    <form class="add-form" method="post">
+      <input type="hidden" name="action" value="add">
+      <label class="field">Task name
+        <input type="text" name="task" placeholder="Add a task..." maxlength="200" required>
+      </label>
+      <label class="field">Priority
+        <select name="priority" required>
+          <option value="" disabled selected>Select</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </label>
+      <label class="field">Category
+        <select name="category" required>
+          <option value="" disabled selected>Select</option>
+          <option value="Work">Work</option>
+          <option value="Personal">Personal</option>
+          <option value="Health">Health</option>
+        </select>
+      </label>
+      <label class="field">Due date
+        <input type="date" name="due_date" required>
+      </label>
+      <button class="add-button" type="submit">Add task</button>
+    </form>
+
+    <section aria-labelledby="tasks-heading">
+      <div class="list-heading">
+        <h2 id="tasks-heading">Open tasks</h2>
+        <span class="count">{{ task_count }} total</span>
+      </div>
+
+      {% if sorted_tasks %}
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Task</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Category</th>
+                <th scope="col">Due date</th>
+                <th scope="col"><span class="visually-hidden">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for task_index, task in sorted_tasks %}
+                <tr>
+                  <td>{{ task["task"] }}</td>
+                  <td>{{ task["priority"] }}</td>
+                  <td>{{ task["category"] }}</td>
+                  <td>{{ task["due_date"] }}</td>
+                  <td>
+                    <form method="post">
+                      <input type="hidden" name="action" value="delete">
+                      <input type="hidden" name="task_index" value="{{ task_index }}">
+                      <button class="delete-button" type="submit" aria-label="Delete {{ task['task'] }}">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="empty-state">No tasks yet. Add one above to get started.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
