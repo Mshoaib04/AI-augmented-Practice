@@ -1,0 +1,6 @@
+[
+  "tests/test_alerts.py::test_alert_explainer_workflow",
+  "tests/test_alerts.py::test_explanation_describes_metric_comparison[80.0-fell below]",
+  "tests/test_alerts.py::test_explanation_describes_metric_comparison[85.0-reached]",
+  "tests/test_alerts.py::test_explanation_describes_metric_comparison[96.5-exceeded]"
+]
