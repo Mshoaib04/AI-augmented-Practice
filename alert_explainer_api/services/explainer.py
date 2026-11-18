@@ -17,10 +17,13 @@ def generate_explanation(alert: Alert) -> str:
     else:
         comparison = "reached"
 
+    acknowledgement = "Not yet acknowledged"
+
     return (
         f'This {alert.severity} alert from {alert.source} is titled "{alert.title}". '
         f"The {alert.metric_name} metric {comparison} its threshold: the current "
         f"value is {float(alert.metric_value)}, compared with a threshold of "
         f"{float(alert.threshold)}. Recommended next step: "
-        f"{NEXT_STEPS[alert.severity]}"
+        f"{NEXT_STEPS[alert.severity]} "
+        f"Acknowledged by: {acknowledgement}."
     )
