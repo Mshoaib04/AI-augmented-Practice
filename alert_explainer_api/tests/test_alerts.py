@@ -136,3 +136,25 @@ def test_explain_alert_with_zero_threshold_does_not_crash(
 
     assert response.status_code == 200
     assert "threshold of 0.0" in response.json()["explanation"]
+
+
+def test_explain_alert_acknowledgement_defaults_when_unresolved(
+    client: TestClient,
+) -> None:
+    alert = _create_alert(
+        client,
+        title="High CPU usage",
+        severity="critical",
+        source="server-prod-01",
+        metric_name="cpu_percent",
+        metric_value=85.5,
+        threshold=80.0,
+    )
+
+    response = client.post(f"/alerts/{alert['id']}/explain")
+
+    assert response.status_code == 200
+    assert (
+        "Acknowledged by: Not yet acknowledged"
+        in response.json()["explanation"]
+    )
